@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --primary: #6366f1;
+    --secondary: #ec4899;
+    --tertiary: #8b5cf6;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-main: #ffffff;
+    --text-muted: rgba(255, 255, 255, 0.7);
+    --success: #10b981;
+    --error: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #0f172a;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 20px;
+}
+
+/* Background animated shapes */
+.background-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.shape {
+    position: absolute;
+    filter: blur(80px);
+    border-radius: 50%;
+    animation: float 20s infinite alternate;
+    opacity: 0.6;
+}
+
+.shape-1 {
+    top: -10%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: var(--primary);
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: var(--secondary);
+    animation-delay: -5s;
+}
+
+.shape-3 {
+    top: 40%;
+    left: 40%;
+    width: 400px;
+    height: 400px;
+    background: var(--tertiary);
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Glass Container */
+.glass-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 900px;
+    min-height: 80vh;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, #a5b4fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    padding: 0.5rem 1.5rem;
+    border-radius: 99px;
+    border: 1px solid var(--glass-border);
+    font-weight: 600;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+}
+
+.section {
+    display: none;
+    flex: 1;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Learn Section Tabs */
+.tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.tab-btn {
+    background: transparent;
+    color: var(--text-muted);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+}
+
+.tab-btn.active {
+    color: var(--text-main);
+    border-bottom: 2px solid var(--secondary);
+}
+
+/* Content Area Grid */
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.content-area::-webkit-scrollbar {
+    width: 6px;
+}
+
+.content-area::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.math-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.math-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.math-card h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary);
+    font-size: 1.5rem;
+}
+
+.math-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    padding: 0.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.math-row:last-child {
+    border-bottom: none;
+}
+
+/* Test Section */
+#test-setup {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+#test-setup h2 {
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.test-options {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.test-start-btn {
+    padding: 1.5rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+    border: 1px solid var(--glass-border);
+    color: white;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 200px;
+    max-width: 250px;
+}
+
+.test-start-btn:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(255,255,255,0.05));
+    box-shadow: 0 10px 25px rgba(99,102,241,0.3);
+}
+
+/* Active Test UI */
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    margin-bottom: 3rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.question-container {
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#question-text {
+    font-size: 4rem;
+    font-weight: 800;
+    margin-bottom: 3rem;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.option-btn {
+    padding: 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: white;
+    transition: all 0.2s;
+}
+
+.option-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--text-muted);
+    transform: scale(1.05);
+}
+
+.option-btn.correct {
+    background: rgba(16, 185, 129, 0.2);
+    border-color: var(--success);
+    color: var(--success);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.option-btn.wrong {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--error);
+    color: var(--error);
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.feedback-msg {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    min-height: 1.5rem;
+}
+
+.feedback-msg.correct-text { color: var(--success); }
+.feedback-msg.wrong-text { color: var(--error); }
+
+.hidden {
+    display: none !important;
+}
+
+/* Test Summary */
+#test-summary {
+    text-align: center;
+    padding: 2rem;
+}
+
+#test-summary h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--success);
+}
+
+.summary-stats {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: inline-block;
+    border: 1px solid var(--glass-border);
+}
+
+.summary-stats p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.summary-stats span {
+    font-weight: 800;
+    color: var(--secondary);
+}
+
+.review-section {
+    margin-bottom: 2rem;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.review-section h3 {
+    color: var(--error);
+    margin-bottom: 1rem;
+}
+
+#review-list {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 0.5rem;
+}
+
+#review-list li {
+    background: rgba(255,255,255,0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+}
+
+#btn-return-setup {
+    background: var(--primary);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 99px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .glass-container {
+        padding: 1rem;
+        margin-top: 10px;
+        min-height: 90vh;
+        border-radius: 16px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .tabs {
+        flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+        flex: 1 1 40%;
+        text-align: center;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .test-options {
+        flex-direction: column;
+    }
+
+    .test-start-btn {
+        width: 100%;
+        max-width: none;
+    }
+
+    #question-text {
+        font-size: 2.5rem;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="glass-container">
+        <header>
+            <h1>Math Master</h1>
+            <nav>
+                <button id="nav-learn" class="nav-btn active">Learn</button>
+                <button id="nav-test" class="nav-btn">Test</button>
+            </nav>
+        </header>
+
+        <main id="learn-section" class="section active">
+            <div class="tabs">
+                <button class="tab-btn active" data-target="tables">Tables (1-20)</button>
+                <button class="tab-btn" data-target="squares">Squares (1-30)</button>
+                <button class="tab-btn" data-target="cubes">Cubes (1-20)</button>
+            </div>
+            
+            <div class="content-area" id="learn-content">
+                <!-- Content generated dynamically -->
+            </div>
+        </main>
+
+        <main id="test-section" class="section">
+            <div id="test-setup">
+                <h2>Choose a topic to test your skills</h2>
+                <div class="test-options">
+                    <button class="test-start-btn" data-type="tables">Tables Test</button>
+                    <button class="test-start-btn" data-type="squares">Squares Test</button>
+                    <button class="test-start-btn" data-type="cubes">Cubes Test</button>
+                </div>
+            </div>
+
+            <div id="test-active" class="hidden">
+                <div class="test-header">
+                    <h2 id="test-title">Tables Test</h2>
+                    <span id="score-display">Score: 0</span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
+                <div class="question-container">
+                    <h3 id="question-text">5 x 6 = ?</h3>
+                    <div class="options-grid" id="options-grid">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+                
+                <div id="feedback" class="feedback-msg"></div>
+            </div>
+
+            <div id="test-summary" class="hidden">
+                <h2>Test Complete!</h2>
+                <div class="summary-stats">
+                    <p>Total Questions: <span id="summary-total"></span></p>
+                    <p>Correct Answers: <span id="summary-correct"></span></p>
+                    <p>Accuracy: <span id="summary-accuracy"></span>%</p>
+                </div>
+                <div class="review-section hidden" id="review-section">
+                    <h3>Questions to practice:</h3>
+                    <ul id="review-list"></ul>
+                </div>
+                <button class="nav-btn" id="btn-return-setup">Play Again</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Navigation
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const sections = document.querySelectorAll('.section');
+    
+    // Learn Section
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const learnContent = document.getElementById('learn-content');
+    
+    // Test Section
+    const startTestBtns = document.querySelectorAll('.test-start-btn');
+    const testSetup = document.getElementById('test-setup');
+    const testActive = document.getElementById('test-active');
+    const testSummary = document.getElementById('test-summary');
+    const questionText = document.getElementById('question-text');
+    const optionsGrid = document.getElementById('options-grid');
+    const feedbackMsg = document.getElementById('feedback');
+    const progressFill = document.getElementById('progress-fill');
+    const scoreDisplay = document.getElementById('score-display');
+    const testTitle = document.getElementById('test-title');
+    const btnReturnSetup = document.getElementById('btn-return-setup');
+    
+    // State
+    let currentTestMode = null;
+    let questionQueue = [];
+    let currentQuestion = null;
+    let totalQuestions = 0;
+    let initialTotalQuestions = 0;
+    let correctAnswers = 0;
+    let reviewItems = new Set();
+    
+    // --- Navigation Logic ---
+    navBtns.forEach(btn => {
+        if(btn.id === 'btn-return-setup') return; // Handled separately
+        btn.addEventListener('click', () => {
+            navBtns.forEach(b => {
+                if(b.id !== 'btn-return-setup') b.classList.remove('active');
+            });
+            btn.classList.add('active');
+            
+            sections.forEach(sec => sec.classList.remove('active'));
+            if(btn.id === 'nav-learn') {
+                document.getElementById('learn-section').classList.add('active');
+            } else {
+                document.getElementById('test-section').classList.add('active');
+                resetTestView();
+            }
+        });
+    });
+
+    // --- Learn Logic ---
+    function renderTables() {
+        let html = '<div class="grid-container">';
+        for(let i = 1; i <= 20; i++) {
+            html += `<div class="math-card"><h3>Table of ${i}</h3>`;
+            for(let j = 1; j <= 10; j++) {
+                html += `<div class="math-row"><span>${i} × ${j}</span> <span>${i*j}</span></div>`;
+            }
+            html += `</div>`;
+        }
+        html += '</div>';
+        learnContent.innerHTML = html;
+    }
+
+    function renderSquares() {
+        let html = '<div class="grid-container">';
+        let numCards = 3;
+        let itemsPerCard = 10;
+        
+        for(let c = 0; c < numCards; c++) {
+            let start = c * itemsPerCard + 1;
+            let end = start + itemsPerCard - 1;
+            html += `<div class="math-card"><h3>Squares ${start}-${end}</h3>`;
+            for(let i = start; i <= end; i++) {
+                html += `<div class="math-row"><span>${i}²</span> <span>${i*i}</span></div>`;
+            }
+            html += `</div>`;
+        }
+        html += '</div>';
+        learnContent.innerHTML = html;
+    }
+
+    function renderCubes() {
+        let html = '<div class="grid-container">';
+        let numCards = 2;
+        let itemsPerCard = 10;
+        
+        for(let c = 0; c < numCards; c++) {
+            let start = c * itemsPerCard + 1;
+            let end = start + itemsPerCard - 1;
+            html += `<div class="math-card"><h3>Cubes ${start}-${end}</h3>`;
+            for(let i = start; i <= end; i++) {
+                html += `<div class="math-row"><span>${i}³</span> <span>${i*i*i}</span></div>`;
+            }
+            html += `</div>`;
+        }
+        html += '</div>';
+        learnContent.innerHTML = html;
+    }
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const target = btn.getAttribute('data-target');
+            if(target === 'tables') renderTables();
+            if(target === 'squares') renderSquares();
+            if(target === 'cubes') renderCubes();
+        });
+    });
+
+    // Initial render
+    renderTables();
+
+    // --- Test Logic ---
+    function resetTestView() {
+        testSetup.classList.remove('hidden');
+        testActive.classList.add('hidden');
+        testSummary.classList.add('hidden');
+    }
+
+    startTestBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.getAttribute('data-type');
+            startTest(type);
+        });
+    });
+
+    function generateQuestions(type) {
+        let questions = [];
+        if(type === 'tables') {
+            for(let k=0; k<20; k++) {
+                let i = Math.floor(Math.random() * 19) + 2; // 2 to 20
+                let j = Math.floor(Math.random() * 9) + 2; // 2 to 10
+                questions.push({ text: `${i} × ${j}`, answer: i * j, type: 'tables' });
+            }
+        } else if(type === 'squares') {
+            for(let k=0; k<15; k++) {
+                let i = Math.floor(Math.random() * 29) + 2; // 2 to 30
+                questions.push({ text: `${i}²`, answer: i * i, type: 'squares' });
+            }
+        } else if(type === 'cubes') {
+            for(let k=0; k<15; k++) {
+                let i = Math.floor(Math.random() * 19) + 2; // 2 to 20
+                questions.push({ text: `${i}³`, answer: i * i * i, type: 'cubes' });
+            }
+        }
+        return questions.sort(() => Math.random() - 0.5);
+    }
+
+    function startTest(type) {
+        currentTestMode = type;
+        testTitle.textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Test';
+        
+        questionQueue = generateQuestions(type);
+        initialTotalQuestions = questionQueue.length;
+        totalQuestions = questionQueue.length;
+        correctAnswers = 0;
+        reviewItems.clear();
+        
+        testSetup.classList.add('hidden');
+        testActive.classList.remove('hidden');
+        
+        updateProgress();
+        nextQuestion();
+    }
+
+    function updateProgress() {
+        let answered = totalQuestions - questionQueue.length;
+        let percentage = (answered / totalQuestions) * 100;
+        progressFill.style.width = `${percentage}%`;
+        scoreDisplay.textContent = `Score: ${correctAnswers}`;
+    }
+
+    function generateOptions(correctAnswer, type) {
+        let options = [correctAnswer];
+        let attempts = 0;
+        while(options.length < 4 && attempts < 50) {
+            attempts++;
+            let offset = Math.floor(Math.random() * 20) - 10;
+            if (offset === 0) offset = 5;
+            
+            let wrongAnswer = correctAnswer + offset;
+            
+            if(type === 'squares' || type === 'cubes') {
+               let baseApprox = type === 'squares' ? Math.sqrt(correctAnswer) : Math.cbrt(correctAnswer);
+               let wrongBase = Math.round(baseApprox) + (Math.random() > 0.5 ? 1 : -1);
+               if(wrongBase < 1) wrongBase = 2;
+               wrongAnswer = type === 'squares' ? wrongBase * wrongBase : wrongBase * wrongBase * wrongBase;
+               
+               if(wrongAnswer === correctAnswer) wrongAnswer += (Math.floor(Math.random() * 10) + 1);
+            }
+
+            if(wrongAnswer > 0 && !options.includes(wrongAnswer)) {
+                options.push(wrongAnswer);
+            }
+        }
+        
+        let fallback = correctAnswer + 1;
+        while(options.length < 4) {
+            if(!options.includes(fallback)) options.push(fallback);
+            fallback++;
+        }
+        
+        return options.sort(() => Math.random() - 0.5);
+    }
+
+    function nextQuestion() {
+        if(questionQueue.length === 0) {
+            endTest();
+            return;
+        }
+        
+        currentQuestion = questionQueue.shift();
+        questionText.textContent = currentQuestion.text + ' = ?';
+        
+        const options = generateOptions(currentQuestion.answer, currentQuestion.type);
+        
+        optionsGrid.innerHTML = '';
+        options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = opt;
+            btn.addEventListener('click', () => handleAnswer(opt, btn));
+            optionsGrid.appendChild(btn);
+        });
+        
+        feedbackMsg.textContent = '';
+        feedbackMsg.className = 'feedback-msg';
+    }
+
+    function handleAnswer(selectedAnswer, btnElement) {
+        const optionBtns = document.querySelectorAll('.option-btn');
+        optionBtns.forEach(btn => btn.disabled = true);
+        
+        if(selectedAnswer === currentQuestion.answer) {
+            btnElement.classList.add('correct');
+            feedbackMsg.textContent = 'Correct! Awesome!';
+            feedbackMsg.classList.add('correct-text');
+            correctAnswers++;
+            
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6, x: 0 },
+                    disableForReducedMotion: true
+                });
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6, x: 1 },
+                    disableForReducedMotion: true
+                });
+            }
+        } else {
+            btnElement.classList.add('wrong');
+            feedbackMsg.textContent = `Incorrect. ${currentQuestion.text} = ${currentQuestion.answer}`;
+            feedbackMsg.classList.add('wrong-text');
+            
+            let insertIndex = Math.min(questionQueue.length, 3);
+            questionQueue.splice(insertIndex, 0, currentQuestion);
+            totalQuestions++;
+            
+            reviewItems.add(`${currentQuestion.text} = ${currentQuestion.answer}`);
+            
+            optionBtns.forEach(b => {
+                if(parseInt(b.textContent) === currentQuestion.answer) {
+                    b.classList.add('correct');
+                }
+            });
+        }
+        
+        updateProgress();
+        
+        setTimeout(() => {
+            nextQuestion();
+        }, 500);
+    }
+
+    function endTest() {
+        testActive.classList.add('hidden');
+        testSummary.classList.remove('hidden');
+        
+        progressFill.style.width = '100%';
+        
+        document.getElementById('summary-total').textContent = initialTotalQuestions;
+        document.getElementById('summary-correct').textContent = correctAnswers;
+        
+        let mistakes = reviewItems.size;
+        let accuracy = Math.round(((initialTotalQuestions - mistakes) / initialTotalQuestions) * 100);
+        document.getElementById('summary-accuracy').textContent = accuracy;
+        
+        const reviewSection = document.getElementById('review-section');
+        const reviewList = document.getElementById('review-list');
+        
+        if(reviewItems.size > 0) {
+            reviewSection.classList.remove('hidden');
+            reviewList.innerHTML = '';
+            reviewItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                reviewList.appendChild(li);
+            });
+        } else {
+            reviewSection.classList.add('hidden');
+        }
+    }
+
+    btnReturnSetup.addEventListener('click', resetTestView);
+});
+    </script>
+</body>
+</html>
